@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Year's Flower Celebration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background-image: url('bg7.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 0.6s ease-in-out;
+    }
+
+    .flowers-title {
+      font-size: 24px;
+      color: #228B22;
+      margin: 15px 10px;
+      border: 3px solid #228B22;
+      padding: 10px 15px;
+      border-radius: 15px;
+      background: #ffffffcc;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    .flower-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .flower {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .flower:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 12px gold;
+    }
+
+    .flower img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .letter {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 90%;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
+
+    .celebrate-btn {
+      margin: 10px;
+      padding: 8px 16px;
+      background: gold;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 20px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 10px;
+    }
+
+    .modal-content {
+      background: #fffaf0;
+      padding: 15px;
+      border-radius: 12px;
+      max-width: 95%;
+      font-family: 'Pacifico', cursive;
+      border: 3px solid #e6cfa7;
+      background-image: linear-gradient(#fffaf0, #fffaf0), linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      position: relative;
+      animation: letterPop 0.35s ease-out;
+      text-align: center;
+    }
+
+    @keyframes letterPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h3 { margin-top: 0; color: #8b5e3c; font-size: 18px; }
+    .modal-content p { font-size: 16px; line-height: 1.5; color: #5a3e2b; word-break: break-word; }
+
+    .close {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .letter-music-btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: 18px;
+      border: none;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Pacifico', cursive;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .firework {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2000;
+      opacity: 1;
+      animation: explode 1.3s cubic-bezier(.17,.67,.83,.67) forwards;
+    }
+
+    @keyframes explode {
+      0% { transform: translate(0,0) scale(1); opacity: 1; }
+      70% { opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) scale(0.3); opacity: 0; }
+    }
+
+    .newyear-letter {
+      max-width: 90%;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      border: 3px solid transparent;
+      background-image: linear-gradient(#fffdf7, #fffdf7), linear-gradient(135deg, #ffd1dc, #ffb347, #ff9a9e);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      text-align: center;
+      margin: 10px auto;
+    }
+
+    .newyear-letter::before, .newyear-letter::after {
+      content: "✿";
+      position: absolute;
+      font-size: 16px;
+      color: #ff8fa3;
+    }
+
+    .newyear-letter::before { top: 6px; left: 8px; }
+    .newyear-letter::after { bottom: 6px; right: 8px; }
+
+    .newyear-letter.expanded { max-width: 95%; transform: scale(1.03); box-shadow: 0 0 25px rgba(255,182,193,0.8); }
+    .newyear-letter.expanded p { font-size: 1.1em; }
+
+    /* MOBILE MEDIA QUERIES */
+    @media (max-width: 600px) {
+      .flower { width: 60px; height: 60px; }
+      .flowers-title { font-size: 20px; padding: 8px 12px; }
+      .modal-content h3 { font-size: 16px; }
+      .modal-content p { font-size: 14px; }
+      .celebrate-btn { font-size: 12px; padding: 6px 12px; }
+      .letter-music-btn { font-size: 12px; padding: 5px 10px; }
+    }
+  </style>
+
+</head>
+<body>
+
+<button class="celebrate-btn">Change Background 🌅</button>
+
+<h2 class="flowers-title">Janine's Favorite Flowers</h2>
+
+<div class="flower-row">
+  <div class="flower" data-title="Tulips" data-text=" 'You strike me, as a woman who's never been satisfied' <br><br> Then lemme satisfy you babe 😘😘😘" data-song="satisfied.mp3">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_07RJJx3jOLSgiEzKNXsixhRDEUu2NhDCmuL5kph3vrEHxN4reHJ8_Xnj&s=10">
+  </div>
+  <div class="flower" data-title="Lilies" data-text=" 'Let the arrow fly, once yah know that your aim is true' <br><br> Dont ever doubt yourself when you're doing the right thing (●'◡'●)" data-song="the challenge.mp3">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx83q5HPDUoukkzVnhFdgxrc1Tcmbv-7Ai-Q&s">
+  </div>
+  <div class="flower" data-title="Hydrangeas" data-text="Dear janine <br><br> 'You outshine the morning sun bebe kuuu (^///^)' <br><br> Just like hamilton said, <br>'Pride is not the word I'm looking for, there is so much more inside me nowww ' <br> ☆*: .｡. o(≧▽≦)o .｡.:*☆" data-song="dear theodosia.mp3">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNyQx1cYXgXPX8lCThmTDAT43PF4nDP4HkSw&s">
+  </div>
+</div>
+
+<div class="flower-row">
+  <div class="flower" data-title="Dahlias" data-text=" 'I'm not sorry for lovingg yahh soo sooo muchh blehh (✿◠‿◠)' <br><br> I just wanna say tha I love you very much and I'll be very lonely without u (っ °Д °;)っ" data-song="not sorry.mp3">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsiwHAf8RNDWY_OH5_awywb_pcJZO2ap0tfA&s">
+  </div>
+  <div class="flower" data-title="Delphinium" data-text=" 'I would fall inlove with you over and over again (っ °Д °;)っ ' <br><br> So please dont leave me 😓😓😓" data-song="Would Fall.mp3">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTn_k0crfvMmzpTJNnnaErXBAxMCEQsIdz_SQ&s">
+  </div>
+</div>
+
+<div class="letter">
+  <div class="modal-content newyear-letter">
+    <h3>Happy New Year 🎉</h3>
+    <p>Dear Janine,</p>
+    <p>Thank you for filling my year with love and happiness.</p>
+    <p>— Nakasalamin Guy</p>
+    <button class="celebrate-btn">Celebrate</button>
+  </div>
+</div>
+
+<!-- LETTER MODAL -->
+<div id="flowerModal" class="modal">
+  <div class="modal-content">
+    <span class="close">×</span>
+    <h3 id="letterTitle"></h3>
+    <p id="letterBody"></p>
+    <button class="letter-music-btn">▶ Play Song</button>
+  </div>
+</div>
+
+<audio id="letterSong" preload = "auto"></audio>
+<audio id="celebrateSound" src="fireworks.mp3"></audio>
+
+<script>
+  const backgrounds = ['bg1.jpg','bg2.jpg','bg3.jpg','bg4.jpg','bg5.jpg','bg6.jpg','bg7.jpg','bg8.jpg'];
+  let bgIndex = 6;
+  let slideshowInterval = null;
+
+  // Desktop-only slideshow (mobile disabled)
+  function startBackgroundSlideshow(interval = 5000) {
+    slideshowInterval = setInterval(() => {
+      bgIndex = (bgIndex + 1) % backgrounds.length;
+      document.body.style.backgroundImage = `url('${backgrounds[bgIndex]}')`;
+    }, interval);
+  }
+
+  if (window.innerWidth > 768) {
+    startBackgroundSlideshow();
+  }
+
+  // Flowers open letters (MOBILE-SAFE AUDIO)
+  const flowers = document.querySelectorAll('.flower');
+  const flowerModal = document.getElementById('flowerModal');
+  const letterSong = document.getElementById('letterSong');
+
+  flowers.forEach(flower => {
+    flower.addEventListener('click', () => {
+      const title = flower.dataset.title;
+      const text = flower.dataset.text;
+      const song = flower.dataset.song;
+
+      document.getElementById('letterTitle').innerHTML = title;
+      document.getElementById('letterBody').innerHTML = text;
+
+      // Stop previous audio
+      letterSong.pause();
+      letterSong.currentTime = 0;
+
+      // Set & play new song (tap-triggered = allowed)
+      letterSong.src = song;
+      letterSong.load();
+      letterSong.play().catch(() => {
+        alert("Tap ▶ Play Song to hear the music 🎵");
+      });
+
+      flowerModal.style.display = 'flex';
+    });
+  });
+
+  // Close modal
+  flowerModal.querySelector('.close').addEventListener('click', ()=> {
+    flowerModal.style.display = 'none';
+    letterSong.pause();
+  });
+
+  // Play song button (REQUIRED for iOS/Android)
+  flowerModal.querySelector('.letter-music-btn').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    letterSong.load();
+    letterSong.play();
+  });
+
+  // Toggle new year letter expansion
+  const newYearLetter = document.querySelector('.newyear-letter');
+  newYearLetter.addEventListener('click', ()=> newYearLetter.classList.toggle('expanded'));
+
+  // Fireworks
+  function celebrate() {
+    const sound = document.getElementById('celebrateSound');
+    sound.currentTime = 0;
+    sound.play().catch(()=>{});
+
+    for(let i=0;i<5;i++){
+      setTimeout(createFireworkBurst,i*300);
+    }
+  }
+
+  function createFireworkBurst() {
+    const centerX = Math.random()*window.innerWidth*0.8 + window.innerWidth*0.1;
+    const centerY = Math.random()*window.innerHeight*0.4 + window.innerHeight*0.1;
+    const colors = ['#ff4757','#ffa502','#1e90ff','#2ed573','#ff6b81'];
+
+    for(let i=0;i<30;i++){
+      const particle = document.createElement('div');
+      particle.classList.add('firework');
+      particle.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+
+      const angle = Math.random()*2*Math.PI;
+      const distance = Math.random()*100+30;
+
+      particle.style.left = centerX+'px';
+      particle.style.top = centerY+'px';
+      particle.style.setProperty('--x',Math.cos(angle)*distance+'px');
+      particle.style.setProperty('--y',Math.sin(angle)*distance+'px');
+
+      document.body.appendChild(particle);
+      setTimeout(()=>particle.remove(),1000);
+    }
+  }
+
+  // Celebrate buttons (also change background safely)
+  document.querySelectorAll('.celebrate-btn').forEach(btn=>{
+    btn.addEventListener('click', () => {
+      celebrate();
+      bgIndex = (bgIndex + 1) % backgrounds.length;
+      document.body.style.backgroundImage = `url('${backgrounds[bgIndex]}')`;
+    });
+  });
+</script>
